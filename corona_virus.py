@@ -9,7 +9,7 @@ import csv
 #FOR EXAMPLE:
 #path = "/home/believe/py/" or "D:\believe\py\"
 
-file_path = "/home/mostafa/ProjectPy/Project/corona/"
+file_path = ""
 
 columns = ["Countries", "Total Cases", "New Cases", "Total Deaths", "New Deaths", "Total Recovered",
            "Active Cases", "Serious Critical", "Tot Cases", "Deaths", "Total Tests", "Tests"]
