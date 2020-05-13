@@ -5,7 +5,6 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 
-
 #if you want the data to be save in csv file, first write the path of file in the path variable
 #FOR EXAMPLE:
 #path = "/home/believe/py/" or "D:\believe\py\"
