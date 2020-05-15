@@ -4,7 +4,6 @@ import requests
 import csv
 from bs4 import BeautifulSoup
 
-
 def get_countries_info():
     req = requests.get("https://www.worldometers.info/coronavirus/")
 
