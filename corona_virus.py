@@ -38,7 +38,7 @@ def get_countries_info():
 
 def info_correction(countries_info):
     for country_info in countries_info:  # countries have list of country
-        # country_info is a list and have info abaut county
+        # country_info is a list and have info about county
         for idx, value in enumerate(country_info):
             if idx > 0:  # idx 0 is name of country
                 if value == "":
