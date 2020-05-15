@@ -20,13 +20,13 @@ def get_countries_info():
             country = []
             tds = tr.find_all("td")
 
-            for td in tds[1:]:  # start with1 item because first item is for show rows
+            for td in tds[1:]:  # start with 1 item because first item is for show rows
                 text = td.text
                 info = text.split("\n")[0]
 
                 country.append(info)
 
-            # this item will be remove becuase this is ALL tab in site's table and we don't need it
+            # this item will be remove because this is ALL tab in site's table and we don't need it
             country.pop(-1)
             countries_info.append(country)
 
