@@ -74,7 +74,7 @@ def info_correction(countries_info):
                             number = int(value.replace(",", ""))
                             country_info[idx] = number
 
-                        elif ("." in value) and (idx != 1):
+                        elif "." in value:
                             number = int(value.replace(".", ""))
                             country_info[idx] = number
     return countries_info
@@ -83,13 +83,13 @@ def info_correction(countries_info):
 def sort_informations(informations):
     # selection sort algorithm for information
     for i in range(len(informations)):
-        minimum = i
+        maximum = i
 
         for j in range(i + 1, len(informations)):
-            if int(informations[j][1]) > int(informations[minimum][1]):
-                minimum = j
+            if int(informations[j][1]) > int(informations[maximum][1]):
+                maximum = j
 
-            informations[minimum], informations[i] = informations[i], informations[minimum]
+            informations[maximum], informations[i] = informations[i], informations[maximum]
 
     return informations
 
@@ -113,6 +113,8 @@ def write_in_csv(information, csv_file_path=None):
 
         csv_writer = csv.writer(corona_csv, delimiter=",")
         csv_writer.writerows(information)
+
+    print("Done.\nYour csv file saved in current location.")
 
 
 try:
