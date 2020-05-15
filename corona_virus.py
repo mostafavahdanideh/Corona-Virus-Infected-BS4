@@ -1,8 +1,26 @@
 #!/usr/bin/python3.8
 
 import requests
+import os
 import csv
+import platform
 from bs4 import BeautifulSoup
+
+
+def create_file_path():
+    operating_system = platform.system()
+
+    if (operating_system == "Linux") or (operating_system == "Mac"):
+        file_name = "/coronavirus.csv"
+
+    elif (operating_system == "Windows"):
+        file_name = r"\coronavirus.csv"
+
+    else:
+        raise RuntimeError("Your operating system is not recognized for creating a file in a current location of this script.\nYou can manually set the path with csv_file_path parameter in write_in_csv func to save the file.")
+
+    return os.path.dirname(__file__) + file_name
+
 
 def get_countries_info():
     req = requests.get("https://www.worldometers.info/coronavirus/")
@@ -76,29 +94,32 @@ def sort_informations(informations):
     return informations
 
 
-def write_in_csv(information, coloums, path):
+def write_in_csv(information, csv_file_path=None):
     # save information in csv file each time run this script
-    with open(f"{path}coronavirus.csv", "w") as corona_csv:
+    #file.csv will be save in your current location of this script
+
+    columns = ["Countries", "Total Cases", "New Cases", "Total Deaths", "New Deaths", "Total Recovered",
+               "Active Cases", "Serious Critical", "Tot Cases", "Deaths", "Total Tests", "Tests", "Population"]
+
+    if csv_file_path == None:
+        corona_file_path = create_file_path()
+    else:
+        if (".csv" not in csv_file_path):
+            csv_file_path = csv_file_path + '.csv'
+        corona_file_path = csv_file_path
+
+    with open(f"{corona_file_path}", "w") as corona_csv:
         information.insert(0, columns)
 
         csv_writer = csv.writer(corona_csv, delimiter=",")
         csv_writer.writerows(information)
 
 
-# if you want the data to be save in csv file, first write the path of file in the path variable
-# FOR EXAMPLE:
-# path = "/home/believe/py/" or "D:\believe\py\"
-
-file_path = "/home/mostafa/ProjectPy/Project/corona/"
-
-columns = ["Countries", "Total Cases", "New Cases", "Total Deaths", "New Deaths", "Total Recovered",
-           "Active Cases", "Serious Critical", "Tot Cases", "Deaths", "Total Tests", "Tests", "Population"]
-
 try:
     corona_info = get_countries_info()
     correct_info = info_correction(corona_info)
     sort_info = sort_informations(correct_info)
 
-    write_in_csv(sort_info, columns, file_path)
+    write_in_csv(sort_info)
 except Exception as error:
     print(error)
