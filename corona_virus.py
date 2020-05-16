@@ -5,6 +5,9 @@ import os
 import csv
 import platform
 from bs4 import BeautifulSoup
+from corona_plot import get_total_data, plot_data
+
+
 
 
 def create_file_path():
@@ -114,14 +117,24 @@ def write_in_csv(information, csv_file_path=None):
         csv_writer = csv.writer(corona_csv, delimiter=",")
         csv_writer.writerows(information)
 
-    print("Done.\nYour csv file saved in current location.")
+    print("Done, Your csv file saved in current location.")
 
 
-try:
-    corona_info = get_countries_info()
-    correct_info = info_correction(corona_info)
-    sort_info = sort_informations(correct_info)
 
-    write_in_csv(sort_info)
-except Exception as error:
-    print(error)
+def run_script():
+    try:
+        corona_info = get_countries_info()
+        correct_info = info_correction(corona_info)
+        sort_info = sort_informations(correct_info)
+
+        write_in_csv(sort_info)
+
+        total_case, total_death = get_total_data(create_file_path())
+
+        plot_data(total_case, total_death)
+
+    except Exception as error:
+        print(error)
+
+
+run_script()
