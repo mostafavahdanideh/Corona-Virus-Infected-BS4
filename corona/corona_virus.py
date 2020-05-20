@@ -5,19 +5,16 @@ import os
 import csv
 import platform
 from bs4 import BeautifulSoup
-from corona_plot import get_total_data, plot_data
-
-
 
 
 def create_file_path():
     operating_system = platform.system()
 
     if (operating_system == "Linux") or (operating_system == "Mac"):
-        file_name = "/coronavirus.csv"
+        file_name = "/coronavirus"
 
     elif (operating_system == "Windows"):
-        file_name = r"\coronavirus.csv"
+        file_name = r"\coronavirus"
 
     else:
         raise RuntimeError("Your operating system is not recognized for creating a file in a current location of this script.\nYou can manually set the path with csv_file_path parameter in write_in_csv func to save the file.")
@@ -37,7 +34,7 @@ def get_countries_info():
         tbody = table[0].find_all("tbody")
         trs = tbody[0].find_all("tr", attrs={"style": ""})
 
-        for tr in trs[1:]:  # start with 1 item because firts item is for world info
+        for tr in trs[1:]:  # start with 1 item because first item is for world info
             country = []
             tds = tr.find_all("td")
 
@@ -47,9 +44,12 @@ def get_countries_info():
 
                 country.append(info)
 
-            # this item will be remove because this is ALL tab in site's table and we don't need it
-            country.pop(-1)
-            countries_info.append(country)
+            if len(countries_info) < 99:
+                # this item will be remove because this is ALL tab in site's table and we don't need it
+                country.pop(-1)
+                countries_info.append(country)
+            else:
+                break
 
         return countries_info
 
@@ -105,36 +105,21 @@ def write_in_csv(information, csv_file_path=None):
                "Active Cases", "Serious Critical", "Tot Cases", "Deaths", "Total Tests", "Tests", "Population"]
 
     if csv_file_path == None:
-        corona_file_path = create_file_path()
+        csv_file_path = create_file_path() + '.csv'
+
+    elif csv_file_path.__class__.__name__ == "function":
+        csv_file_path = csv_file_path() + ".csv"
+
+    elif type(csv_file_path) != str:
+        raise TypeError("csv_file_path param must be str obj")
+
     else:
         if (".csv" not in csv_file_path):
-            csv_file_path = csv_file_path + '.csv'
-        corona_file_path = csv_file_path
+            raise RuntimeError("Your path or file name is not correct")
 
-    with open(f"{corona_file_path}", "w") as corona_csv:
+    with open(csv_file_path, "w") as corona_csv:
         information.insert(0, columns)
 
         csv_writer = csv.writer(corona_csv, delimiter=",")
         csv_writer.writerows(information)
 
-    print("Done, Your csv file saved in current location.")
-
-
-
-def run_script():
-    try:
-        corona_info = get_countries_info()
-        correct_info = info_correction(corona_info)
-        sort_info = sort_informations(correct_info)
-
-        write_in_csv(sort_info)
-
-        total_case, total_death = get_total_data(create_file_path())
-
-        plot_data(total_case, total_death)
-
-    except Exception as error:
-        print(error)
-
-
-run_script()
