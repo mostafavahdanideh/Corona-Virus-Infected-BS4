@@ -8,4 +8,4 @@ The site from which I am extracting the information is now all changing and I tr
 
 You can also see the first few countries on a chart in terms of Corona status
 If you have a problem running the program, I'd be happy to report it so I can fix it
-so you can create issues or email to me my gmail is vahdanim77@gamil.com
+so you can create issues or email to me my gmail is vahdanim77@gmail.com
