@@ -117,7 +117,7 @@ def write_in_csv(information, csv_file_path=None):
         if (".csv" not in csv_file_path):
             raise RuntimeError("Your path or file name is not correct")
 
-    with open(csv_file_path, "w") as corona_csv:
+    with open(csv_file_path, "w", newline="") as corona_csv:
         information.insert(0, columns)
 
         csv_writer = csv.writer(corona_csv, delimiter=",")
